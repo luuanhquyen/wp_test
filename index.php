@@ -88,12 +88,8 @@ class TestScript
         $this->buildCompanyTree($companies, $company, 'uuid-1', $costs);
         $company = json_decode(json_encode($company), true);
 
-        // calculate travel cost the whole company
-        $data = $this->getChildrenFor([$company], 0);
-        foreach ($data as $d) {
-            $cost = $cost + $d;
-        }
-        $company['cost'] = $cost;
+        // calculate travel cost the whole company 
+        $company['cost'] = $this->calculate($company);
         $company['execute_time'] = (microtime(true) - $start);
         echo json_encode($company);
 
