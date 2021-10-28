@@ -32,7 +32,6 @@ class Company
     // add child company
     public function addChild(Company $company)
     {
-
         $this->children[$company->id] = $company;
     }
 
@@ -88,7 +87,7 @@ class TestScript
         $this->buildCompanyTree($companies, $company, 'uuid-1', $costs);
         $company = json_decode(json_encode($company), true);
 
-        // calculate travel cost the whole company 
+        // calculate travel cost the whole company
         $company['cost'] = $this->calculate($company);
         $company['execute_time'] = (microtime(true) - $start);
         echo json_encode($company);
@@ -96,8 +95,11 @@ class TestScript
         //echo 'Total time: '.  (microtime(true) - $start);
     }
 
-
-    // Flat all children and get travel costs.
+    /**
+     * Get flat children to calculate cost
+     *
+     * @var array $ary company array
+     */
     public function getChildrenFor($ary, $id)
     {
         $results = array();
@@ -112,6 +114,11 @@ class TestScript
         return count($results) > 0 ? $results : FALSE;
     }
 
+    /**
+     * Calculate the travel cost of the company.
+     *
+     * @var array $tuple company
+     */
     public function calculate($tuple)
     {
         $tuple = json_decode(json_encode($tuple), true);
@@ -123,6 +130,13 @@ class TestScript
         return $cost;
     }
 
+    /**
+     * Build company nested tree from flat raw array
+     *
+     * @var array $inArray flat raw array
+     * @var array $company Company to build
+     * @var int $companyId Company id
+     */
     public function buildCompanyTree(&$inArray, $company, $companyId)
     {
         foreach ($inArray as $key => $tuple) {
