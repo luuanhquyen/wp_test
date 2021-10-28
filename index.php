@@ -53,17 +53,17 @@ class TestScript
     public function execute()
     {
         $start = microtime(true);
-            // Read data from API
+        // Read data from API
         $rawCompanies = json_decode(file_get_contents("https://5f27781bf5d27e001612e057.mockapi.io/webprovise/companies"), true);
         $rawTravels = json_decode(file_get_contents("https://5f27781bf5d27e001612e057.mockapi.io/webprovise/travels"), true);
 
-            //Have company id as array index
+        //Have company id as array index
         foreach ($rawCompanies as $index => $rawCompany) {
             $rawCompanies[$rawCompany['id']] = $rawCompany;
             unset($rawCompanies[$index]);
         }
 
-            // Create travel objects from raw array
+        // Create travel objects from raw array
         foreach ($rawTravels as $rawTravel) {
             $travel = new Travel();
             $travel->id = $rawTravel['id'];
@@ -75,7 +75,7 @@ class TestScript
             $travels[] = $travel;
         }
 
-            // Create companies object from raw array
+        // Create companies object from raw array
         foreach ($rawCompanies as $rawCompany) {
             $company = new Company();
             $company->id = $rawCompany['id'];
@@ -89,17 +89,16 @@ class TestScript
             $companies[$company->id] = $company;
         }
 
-            // build nested company objects
+        // build nested company objects
         $company = $companies['uuid-1'];
         $costs = 0;
         $this->buildCompanyTree($companies, $company, 'uuid-1', $costs);
         $company = json_decode(json_encode($company), true);
 
-            // calculate travel cost the whole company
+        // calculate travel cost the whole company
         $company['cost'] = $this->calculate($company);
         $company['execute_time'] = (microtime(true) - $start);
         echo json_encode($company);
-
         //echo 'Total time: '.  (microtime(true) - $start);
     }
 
