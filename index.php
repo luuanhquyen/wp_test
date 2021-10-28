@@ -21,7 +21,11 @@ class Company
     public $cost = 0;
     public $internal_cost = 0; // travel cost exclude children company
 
-    // add travel to company
+    /**
+     * Add travel to company
+     *
+     * @var Travel $travel travel
+     */
     public function addTravel(Travel $travel)
     {
         $this->travels[] = $travel;
@@ -29,7 +33,11 @@ class Company
         $this->internal_cost = $this->internal_cost + $travel->price;
     }
 
-    // add child company
+    /**
+     * Add child company
+     *
+     * @var Company $company company
+     */
     public function addChild(Company $company)
     {
         $this->children[$company->id] = $company;
